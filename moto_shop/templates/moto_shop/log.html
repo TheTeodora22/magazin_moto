@@ -1,0 +1,89 @@
+{% extends "moto_shop/baza.html" %}
+{% load static %}
+
+{% block title %}Log accesari{% endblock %}
+
+{% block content %}
+<section class="container">
+  <h1>/log</h1>
+
+  {% if erori %}
+    <div class="alert alert-warning">
+      <ul>{% for e in erori %}<li>{{ e }}</li>{% endfor %}</ul>
+    </div>
+  {% endif %}
+
+  {% if show_nr %}
+    <h2>Numar accesări (sesiune curenta)</h2>
+    <p><b>{{ nr_total }}</b></p>
+  {% endif %}
+
+  {% if show_detalii %}
+    <h2>Detalii accesari</h2>
+    <ul>
+      {% for a in accesari %}
+        <li>
+          #{{ a.id }}
+          {% if a.pagina %} — {{ a.pagina }}{% endif %}
+          {% if a.data %} — {{ a.data|date:"d-m-Y H:i:s" }}{% endif %}
+          {% if a.ip_client %} — IP: {{ a.ip_client }}{% endif %}
+        </li>
+      {% empty %}
+        <li>Nu există accesări.</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if is_table and tabel_coloane %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          {% for c in tabel_coloane %}<th>{{ c }}</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in tabel_rows %}
+          <tr>
+            {% for cell in row %}
+              <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+        {% empty %}
+          <tr><td colspan="{{ tabel_coloane|length }}">Nu există rânduri.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <ul>
+    {% for a in accesari %}
+      <li>
+        #{{ a.id }}{% if a.url %}: {{ a.url }}{% endif %}
+        {% if a.data %} — {{ a.data|date:"d-m-Y H:i:s" }}{% endif %}
+      </li>
+    {% empty %}
+      <li>Nu există accesări.</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+  {% if stats %}
+    <h3>Statistici accesari</h3>
+    <p>Cel/cele mai accesat(e): <b>{{ stats.max_pages|join:", " }}</b> ({{ stats.max_count }})</p>
+    <p>Cel/cele mai puțin accesat(e): <b>{{ stats.min_pages|join:", " }}</b> ({{ stats.min_count }})</p>
+  {% else %}
+    <p>Nicio accesare.</p>
+  {% endif %}
+
+  {% if params %}
+    <h2>Parametri</h2>
+    <p>{{ params|length }} parametri primiti:</p>
+    <ul>
+      {% for k, v in params %}
+        <li><code>{{ k }}</code> = <code>{{ v }}</code></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>
+{% endblock %}

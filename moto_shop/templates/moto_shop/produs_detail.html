@@ -1,0 +1,60 @@
+{% extends "moto_shop/baza.html" %}
+{% block title %}{{ produs.nume }}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <nav class="breadcrumb">
+    <a href="{% url 'produse_list' %}">Produse</a> /
+    <span>{{ produs.nume }}</span>
+  </nav>
+
+  <header>
+    <h1>{{ produs.nume }}</h1>
+
+{% for cat in produs.categorii.all %}
+  <a href="{{ cat.get_absolute_url }}" class="badge"
+     style="background: {{ cat.culoare|default:'#e0e0e0' }}; color:#fff; padding:3px 8px; border-radius:6px; text-decoration:none; margin-right:4px;">
+    {% if cat.icon_css %}
+      <i class="{{ cat.icon_css }}"></i>
+    {% endif %}
+    {{ cat.nume }}
+  </a>
+{% empty %}
+  <span class="badge" style="background:#ccc; color:#fff; padding:3px 8px; border-radius:6px;">Fără categorie</span>
+{% endfor %}
+
+
+    <p><strong>Brand:</strong> {{ produs.brand.nume }}</p>
+    <p><strong>Pret:</strong> {{ produs.pret_baza }} RON</p>
+  </header>
+
+  <div class="product-layout">
+    <div class="gallery">
+      {% for img in imagini %}
+        <img src="{{ img.url }}" alt="{{ img.alt_text|default:produs.nume }}">
+      {% empty %}
+        <p><em>Nu exista imagini pentru acest produs.</em></p>
+      {% endfor %}
+    </div>
+
+    <div class="details">
+      {% if produs.descriere %}
+        <p>{{ produs.descriere }}</p>
+      {% endif %}
+
+      <h3>Variante</h3>
+      <ul>
+        {% for v in variante %}
+          <li>
+            {{ v.marime }}/{{ v.culoare }} — {{ v.pret }} RON
+            (stoc: {{ v.stoc }})
+            {% if v.discount %} — discount: {{ v.discount.nume }}{% endif %}
+          </li>
+        {% empty %}
+          <li><em>Nu exista variante definite.</em></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

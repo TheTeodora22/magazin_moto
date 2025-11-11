@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Pagina mea{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'moto_shop/css/stil.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
+
+    </head>
+    <body>
+    <header>
+<nav class="meniu">
+        <ul class="meniul-principal">
+            <li><a href="{% url 'index' %}">Acasa</a>
+                <ul class="submenu">
+                    <li><a href="{% url 'index' %}#promotii">Promotii</a></li>
+                    <li><a href="{% url 'index' %}#categorii">Categorii</a></li>
+                    <li><a href="{% url 'index' %}#recomandate">Recomandate</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'despre' %}">Despre</a>
+                <ul class="submenu">
+                    <li><a href="{% url 'despre' %}#cine-suntem">Cine suntem</a></li>
+                    <li><a href="{% url 'despre' %}#de-ce-noi">De ce noi</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'produse_list' %}">Produse</a></li>
+            {% include "moto_shop/_menu_categorii.html" %}
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'cos_virtual' %}">Cos virtual</a></li>
+            <li><a href="{% url 'info' %}">Info</a></li>
+            <li><a href="{% url 'log' %}">Log</a></li>
+        </ul>
+        </nav>
+    </header>     
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            <p>Client IP: {{ ip }}</p>
+            <p>© 2025 Moto Shop</p>
+        </footer>
+
+    </body>
+</html>

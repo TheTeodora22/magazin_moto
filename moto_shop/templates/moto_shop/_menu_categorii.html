@@ -1,0 +1,15 @@
+<li class="menu-item has-children">
+  <a href="#">Categorii</a>
+  <ul class="submenu">
+    {% for c in categorii %}
+      <li>
+        <a href="{{ c.get_absolute_url }}">
+          {% if c.icon_css %}<i class="{{ c.icon_css }}" aria-hidden="true"></i>{% endif %}
+          {{ c.nume }}
+        </a>
+      </li>
+    {% empty %}
+      <li><em>Nicio categorie</em></li>
+    {% endfor %}
+  </ul>
+</li>

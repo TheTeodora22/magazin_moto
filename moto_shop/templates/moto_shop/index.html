@@ -1,0 +1,46 @@
+{% extends "./baza.html" %}
+{% load static %}
+{% block title %}Moto Shop - Acasa{% endblock %}
+
+{% block content %}
+
+<section id="promotii">
+    <h1>Oferta echipamente moto</h1>
+    <img src="{% static 'moto_shop/imagini/hero.jpg' %}" alt="Echipamente moto">
+    <p>Reduceri la casti, geci si protectii pentru sezon.</p>
+</section>
+
+<section id="categorii">
+    <h2>Categorii populare</h2>
+    <ul>
+        <li>Casti moto</li>
+        <li>Geci si pantaloni cu protectii</li>
+        <li>Manusi moto</li>
+        <li>Protectii spate / genunchi</li>
+    </ul>
+</section>
+
+<section id="recomandate">
+    <h2>Produse recomandate</h2>
+    <div class="produs-card">
+        <h3>Casca full face</h3>
+        <p>Pret: 499 RON</p>
+    </div>
+    <div class="produs-card">
+        <h3>Geaca touring textil</h3>
+        <p>Pret: 699 RON</p>
+    </div>
+</section>
+
+<section id="despre-preview">
+    <h2>Despre magazin</h2>
+    <p>Magazin dedicat echipamentelor moto omologate. Siguranta pe primul loc.</p>
+</section>
+
+<section id="testimoniale">
+    <h2>Pareri clienti</h2>
+    <blockquote>"Geaca rezista la ploaie si e confortabila."</blockquote>
+    <blockquote>"Casca e silentioasa la drum lung."</blockquote>
+</section>
+
+{% endblock %}

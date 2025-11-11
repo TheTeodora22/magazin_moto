@@ -1,0 +1,10 @@
+{% if categorie %}
+  <div class="categorie-header"
+       style="border-left: 6px solid {{ categorie.culoare|default:'#ccc' }}; padding-left:.75rem;">
+    <h2>
+      {% if categorie.icon_css %}<i class="{{ categorie.icon_css }}"></i>{% endif %}
+      {{ categorie.nume }}
+    </h2>
+    {% if categorie.descriere %}<p>{{ categorie.descriere }}</p>{% endif %}
+  </div>
+{% endif %}

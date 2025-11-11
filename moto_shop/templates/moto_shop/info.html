@@ -1,0 +1,17 @@
+{% extends "./baza.html" %}
+{% load static %}
+
+{% block title %}Informatii despre server{% endblock %}
+
+{% block content %}
+<h1>Informatii despre server</h1>
+<p>Aceasta este pagina /info.</p>
+
+{% if data_html %}
+<section>
+  <h2>Data si ora</h2>
+  <p>{{ data_html }}</p>
+</section>
+{% endif %}
+
+{% endblock %}

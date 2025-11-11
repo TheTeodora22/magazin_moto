@@ -1,0 +1,22 @@
+{% extends "./baza.html" %}
+{% load static %}
+{% block title %}Despre Moto Shop{% endblock %}
+
+{% block content %}
+
+<section id="cine-suntem">
+    <h1>Cine suntem</h1>
+    <p>Suntem un magazin romanesc specializat in echipamente moto de protectie, pentru incepatori si rideri zilnici.</p>
+    <img src="{% static 'moto_shop/imagini/hero.jpg' %}" alt="Echipament moto complet">
+</section>
+
+<section id="de-ce-noi">
+    <h2>De ce noi</h2>
+    <ul>
+        <li>Produse omologate (casti ECE, protectii CE level 2)</li>
+        <li>Ajutor la alegerea marimii corecte</li>
+        <li>Pret accesibil</li>
+    </ul>
+</section>
+
+{% endblock %}
