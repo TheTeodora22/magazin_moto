@@ -10,6 +10,8 @@ from .utils import Accesare, get_ip
 
 from .models import Produs, Categorie, ImagineProdus
 
+from .forms import ContactForm
+
 ACCESARI = []
 
 def meniu_cat():
@@ -293,3 +295,15 @@ def categorie_detail(request, slug):
         "moto_shop/produse_list.html",   
         {"ip": get_ip(request),"page_obj": page_obj, "sort": sort, "categorie": categorie, "title": f"Categoria: {categorie.nume}",**meniu_cat(),}
     )
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            nume = form.cleaned_data['nume']
+            email = form.cleaned_data['email']
+            mesaj = form.cleaned_data['mesaj']
+            return redirect('mesaj_trimis')
+    else:
+        form = ContactForm()
+    return render(request, 'aplicatie_exemplu/contact.html', {'form': form})
