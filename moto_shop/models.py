@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
@@ -136,3 +137,21 @@ class VariantaProdus(models.Model):
 
     def __str__(self):
         return f"{self.produs.nume} - {self.marime}/{self.culoare}"
+    
+class CustomUser(AbstractUser):
+
+    nume = models.CharField(max_length=100, help_text="Numele complet afișat pe site.")
+    telefon = models.CharField(max_length=20, blank=True, help_text="Telefon de contact.")
+    tara = models.CharField(max_length=50, blank=True)
+    judet = models.CharField(max_length=50, blank=True)
+    localitate = models.CharField(max_length=80, blank=True)
+    strada = models.CharField(max_length=120, blank=True)
+    nr_strada = models.IntegerField( null=True,blank=True)
+    cod_postal = models.IntegerField( null=True,blank=True)
+    data_nasterii = models.DateField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Utilizatori"
+
+    def __str__(self):
+        return self.username
