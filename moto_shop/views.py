@@ -5,7 +5,16 @@ from django.http import HttpResponse
 from django.db.models import Prefetch
 from django.contrib import messages
 from django import forms
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .models import CustomUser
+from django.core.mail import EmailMessage
+from django.core.mail import send_mass_mail
+from django.core.mail import mail_admins
 
+
+import logging
 import os
 import json
 import time
@@ -14,8 +23,10 @@ from datetime import datetime, date
 
 
 from .utils import Accesare, get_ip
+from django.contrib.auth.models import Permission
 
-from .models import Produs, Categorie, ImagineProdus
+
+from .models import Produs, Categorie, ImagineProdus, Vizualizare
 
 from .forms import ContactForm, ProduseForm, ProdusForm, CustomAuthenticationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -25,9 +36,36 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, PromotieForm
+
+from django.core.mail import send_mass_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+from .models import Promotie, Vizualizare, CustomUser, Categorie
 
 ACCESARI = []
+
+logger = logging.getLogger("django")
+
+def este_admin_site(user):
+    return user.is_authenticated and user.groups.filter(name="Administratori_site").exists()
+
+from django.conf import settings
+
+def pagina_403(request, titlu="", mesaj=""):
+    n_403 = request.session.get("n_403", 0) + 1
+    request.session["n_403"] = n_403
+    context = {
+        "ip": get_ip(request),
+        "titlu": titlu,
+        "mesaj_personalizat": mesaj,
+        "n_403": n_403,
+        "N_MAX_403": settings.N_MAX_403,
+        **meniu_cat(),
+    }
+    return render(request, "moto_shop/403.html", context, status=403)
+
+
 
 def meniu_cat():
     return {
@@ -44,6 +82,7 @@ def inregistreaza_acces(request):
     ACCESARI.append(acc)
     return acc
 
+# LAB1 : afisare data
 def afis_data(param=None):
     zile = ["Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă","Duminică"]
     luni = ["Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie",
@@ -101,6 +140,12 @@ def contact(request):
 
 def info(request):
     inregistreaza_acces(request)
+    if not este_admin_site(request.user):
+        return pagina_403(
+            request,
+            "Eroare acces log",
+            "Nu ai voie să accesezi pagina de log."
+        )
     param = request.GET.get("data", None)
     context = {
         "ip": get_ip(request),
@@ -124,7 +169,12 @@ def afis_template2(request):
 
 def log(request):
     inregistreaza_acces(request)
-
+    if not este_admin_site(request.user):
+        return pagina_403(
+            request,
+            "Eroare acces log",
+            "Nu ai voie să accesezi pagina de log."
+        )
     lista = ACCESARI[:]      
     erori = []
 
@@ -241,7 +291,11 @@ def produse_list(request):
     inregistreaza_acces(request)
     # sort=a (asc) sort=d (desc) dupa nume
     sort = request.GET.get("sort", "a")
+    # LAB7 : DLOG
+    logger.debug(f"Produse list requested cu sort={sort} si params={request.GET.dict()}")
     if sort not in ("a","d"): 
+        # LAB7 : WLOG
+        logger.warning(f"Parametru sort invalid: {sort}, fallback la 'a'")
         sort = "a"
     ordering = "nume" if sort == "a" else "-nume"
 
@@ -294,6 +348,11 @@ def produse_list(request):
                 request,
                 "Atentie: schimbarea numarului de produse pe pagina poate duce la sarirea unor produse sau reafisarea celor deja vizualizate."
             )
+            # LAB7 : WLOG
+            logger.warning(
+                f"User {request.user.username if request.user.is_authenticated else 'anonim'} "
+                f"a modificat items_per_page la {per_page}"
+            )
     else:
         per_page = 10
 
@@ -315,18 +374,40 @@ def produse_list(request):
     
 def produs_detail(request, pk):
     inregistreaza_acces(request)
-    print("== produs_detail a fost apelat cu pk=", pk)
+
     produs = get_object_or_404(
         Produs.objects.select_related("brand"),
         pk=pk, activ=True
     )
     imagini = produs.imagini.order_by("ordine")
     variante = produs.variante.select_related("furnizor", "discount")
+
+    if request.user.is_authenticated:
+        n = settings.N_MAX_VIZUALIZARI
+        viz_qs = Vizualizare.objects.filter(utilizator=request.user)\
+                                    .order_by('-data_vizualizare')
+
+
+        if viz_qs.count() >= n:
+            viz_qs.last().delete()
+
+        Vizualizare.objects.create(
+            utilizator=request.user,
+            produs=produs
+        )
+
     return render(
         request,
         "moto_shop/produs_detail.html",
-        {"ip": get_ip(request),"produs": produs, "imagini": imagini, "variante": variante,**meniu_cat(),}
+        {
+            "ip": get_ip(request),
+            "produs": produs,
+            "imagini": imagini,
+            "variante": variante,
+            **meniu_cat(),
+        }
     )
+
     
 def categorie_detail(request, slug):
     inregistreaza_acces(request)
@@ -424,6 +505,8 @@ def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
+            # LAB7 : DLOG
+            logger.debug(f"Contact form valid pentru email={form.cleaned_data.get('email')}")
             data = form.cleaned_data.copy()
             # 1. Data nasterii
             data_n = form.cleaned_data['data_nasterii']
@@ -471,16 +554,44 @@ def contact_view(request):
             filename = f"mesaj_{ts}{suffix}.json"
             filepath = os.path.join("Measaje", filename)
 
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
+            try:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                subject = "Eroare la salvarea mesajului de contact"
+                message = f"Eroare: {e}"
+                html_message = (
+                    f'<h1 style="color:red;">{subject}</h1>'
+                    f'<pre style="background-color:red;">{e}</pre>'
+                )
+                mail_admins(subject, message, html_message=html_message)
+                # LAB7 : ELOG
+                logger.error(f"Eroare la salvarea mesajului in {filepath}: {e}", exc_info=True)
+                messages.error(request, "A apărut o eroare la salvarea mesajului.")
+                return redirect("contact")
             
-            return redirect('mesaj_trimis')
+            return redirect("mesaj_trimis")
+
     else:
         form = ContactForm()
     return render(request, 'moto_shop/contact.html', {'form': form,"ip": get_ip(request),**meniu_cat(),})
 
 def produs_creare(request):
     inregistreaza_acces(request)
+
+    if not request.user.is_authenticated or not request.user.has_perm("moto_shop.add_produs"):
+        n_403 = request.session.get("n_403", 0) + 1
+        request.session["n_403"] = n_403
+        context = {
+            "ip": get_ip(request),
+            "titlu": "Eroare adaugare produse",
+            "mesaj_personalizat": "Nu ai voie să adaugi produse moto.",
+            "n_403": n_403,
+            "N_MAX_403": settings.N_MAX_403,
+            **meniu_cat(),
+        }
+        return render(request, "moto_shop/403.html", context, status=403)
+
     if request.method == "POST":
         form = ProdusForm(request.POST)
         if form.is_valid():
@@ -502,19 +613,37 @@ def produs_creare(request):
         {"ip": get_ip(request), "form": form, **meniu_cat()},
     )
 
+
 def register_view(request):
     inregistreaza_acces(request)
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Cont creat cu succes. Te poți autentifica.")
+            user = form.save()
+            # LAB7 : ILOG
+            logger.info(f"User nou inregistrat: {user.username} ({user.email})")
+            context = {
+                "user": user,
+                "domain": request.get_host(),
+                "protocol": "https" if request.is_secure() else "http",
+            }
+            html_content = render_to_string("moto_shop/email_confirmare.html", context)
+            email = EmailMessage(
+                subject="Confirmare adresă e-mail",
+                body=html_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+            )
+            email.content_subtype = "html"
+            email.send()
+            messages.success(request, "Cont creat cu succes. Verifică e-mailul pentru confirmare.")
             return redirect("login")
         else:
-            print("ERORI REGISTER:", form.errors)  # <--- adaugă asta
+            print("ERORI REGISTER:", form.errors)
     else:
         form = CustomUserCreationForm()
     return render(request, "moto_shop/register.html", {"form": form, **meniu_cat()})
+
 
 
 
@@ -525,6 +654,8 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            # LAB7 : ILOG
+            logger.info(f"User {user.username} s-a logat de la IP {get_ip(request)}")
             if form.cleaned_data.get("ramane_logat"):
                 request.session.set_expiry(24 * 60 * 60)
             else:
@@ -551,6 +682,12 @@ def login_view(request):
 
 def logout_view(request):
     inregistreaza_acces(request)
+    if request.user.is_authenticated:
+        try:
+            perm = Permission.objects.get(codename="vizualizeaza_oferta")
+            request.user.user_permissions.remove(perm)
+        except Permission.DoesNotExist:
+            pass
     logout(request)
     return redirect("login")
 
@@ -591,3 +728,166 @@ def schimba_parola_view(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, "moto_shop/schimba_parola.html", {"form": form, **meniu_cat()})
+
+# LAB7 : view confirmare mail
+def confirma_mail(request, cod):
+    try:
+        user = CustomUser.objects.get(cod=cod)
+    except CustomUser.DoesNotExist:
+        # LAB7 : ELOG
+        logger.error(f"Cod de confirmare invalid sau expirat: {cod}")
+        context = {**meniu_cat()}
+        return render(request, "moto_shop/confirmare_esec.html", context)
+    user.email_confirmat = True
+    user.cod = None
+    user.save()
+    context = {"user": user, **meniu_cat()}
+    return render(request, "moto_shop/confirmare_succes.html", context)
+
+# LAB7: trimite promotii
+def trimite_promotie(promotie_id):
+    promotie = Promotie.objects.get(pk=promotie_id)
+    categorii = promotie.categorii.all()
+
+    utilizatori = CustomUser.objects.filter(
+        vizualizare__produs__categorii__in=categorii
+    ).distinct()
+
+    mesaje = []
+
+    for user in utilizatori:
+        categ = Categorie.objects.filter(
+            produse__vizualizare__utilizator=user,
+            produse__categorii__in=categorii
+        ).distinct().first()
+
+        if not categ:
+            continue
+
+        if categ.nume.lower().startswith("cască"):
+            template = "moto_shop/email_promotii/promotie_categ1.txt"
+        else:
+            template = "moto_shop/email_promotii/promotie_categ2.txt"
+
+        context = {
+            "subiect": promotie.nume,
+            "user": user,
+            "categorie_nume": categ.nume,
+            "procent": promotie.procent,
+            "data_expirare": promotie.data_expirare,
+            "descriere": promotie.descriere,
+        }
+
+        text_mesaj = render_to_string(template, context)
+
+        mesaj = (
+            promotie.nume,
+            text_mesaj,
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
+        mesaje.append(mesaj)
+
+    if mesaje:
+        send_mass_mail(mesaje, fail_silently=False)
+
+def promotii_view(request):
+    inregistreaza_acces(request)
+    if request.method == "POST":
+        form = PromotieForm(request.POST)
+        if form.is_valid():
+            promotie = form.save()
+            subiect = form.cleaned_data["subiect"]
+            mesaj_extra = form.cleaned_data["mesaj"]
+            k = settings.PROMO_MIN_VIZUALIZARI
+            categorii_selectate = form.cleaned_data["categorii"]
+
+            template_map = {
+                "SLUG1": "moto_shop/email_promotii/promotie_categ1.txt",
+                "SLUG2": "moto_shop/email_promotii/promotie_categ2.txt",
+            }
+
+            mesaje = []
+
+            for categorie in categorii_selectate:
+                utilizatori = CustomUser.objects.filter(
+                    vizualizare__produs__categorii=categorie
+                ).annotate(
+                    nr_viz=Count(
+                        "vizualizare",
+                        filter=Q(vizualizare__produs__categorii=categorie)
+                    )
+                ).filter(nr_viz__gte=k).distinct()
+
+                tmpl_path = template_map.get(categorie.slug)
+                if not tmpl_path:
+                    continue
+
+                for user in utilizatori:
+                    context = {
+                        "subiect": subiect,
+                        "user": user,
+                        "categorie_nume": categorie.nume,
+                        "procent": promotie.procent,
+                        "data_expirare": promotie.data_expirare,
+                        "descriere": promotie.descriere,
+                        "mesaj_extra": mesaj_extra,
+                    }
+                    text_mesaj = render_to_string(tmpl_path, context)
+                    msg_tuple = (
+                        subiect,
+                        text_mesaj,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [user.email],
+                    )
+                    mesaje.append(msg_tuple)
+
+            if mesaje:
+                send_mass_mail(mesaje, fail_silently=False)
+
+            messages.success(request, "Promoția a fost creată și mailurile au fost trimise.")
+            return redirect("promotii")
+    else:
+        form = PromotieForm()
+
+    return render(
+        request,
+        "moto_shop/promotii.html",
+        {"form": form, **meniu_cat()}
+    )
+
+# LAB8 : interzis
+def interzis_view(request):
+    inregistreaza_acces(request)
+    n_403 = request.session.get("n_403", 0) + 1
+    request.session["n_403"] = n_403
+    context = {
+        "ip": get_ip(request),
+        "titlu": "",
+        "mesaj_personalizat": "Nu aveți permisiunea de a accesa această resursă.",
+        "n_403": n_403,
+        "N_MAX_403": settings.N_MAX_403,
+        **meniu_cat(),
+    }
+    return render(request, "moto_shop/403.html", context, status=403)
+# LAB8 : oferta
+def oferta_view(request):
+    inregistreaza_acces(request)
+    if not request.user.is_authenticated or not request.user.has_perm("moto_shop.vizualizeaza_oferta"):
+        return pagina_403(
+            request,
+            "Eroare afisare oferta",
+            "Nu ai voie să vizualizezi oferta."
+        )
+    context = {"ip": get_ip(request), **meniu_cat()}
+    return render(request, "moto_shop/oferta.html", context)
+
+
+def oferta_claim(request):
+    inregistreaza_acces(request)
+    if not request.user.is_authenticated:
+        return redirect("login")
+    perm = Permission.objects.get(codename="vizualizeaza_oferta")
+    request.user.user_permissions.add(perm)
+    return redirect("oferta")
+

@@ -280,3 +280,28 @@ img {
 {
   list-style: none !important;
 }
+.oferta-banner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff4444;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.oferta-banner a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.oferta-animata {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}

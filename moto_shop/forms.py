@@ -1,13 +1,19 @@
 # forms.py
 from django import forms
 from datetime import date
+from django.utils.crypto import get_random_string
 from django.core.validators import MinLengthValidator
 from django.core.exceptions import ValidationError
 from .models import Produs, Brand, Categorie
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Promotie
+import time
+import logging
+from django.core.mail import mail_admins
+
+logger = logging.getLogger('django')
 
 
 ITEMS_PER_PAGE_CHOICES = [(5, '5'), (10, '10'), (25, '25'), (50, '50')]
@@ -215,7 +221,7 @@ class ContactForm(forms.Form):
         max_length=100,
         label='Subiect',
         required=True,
-        validators=[                                   # fără linkuri + format nume propriu
+        validators=[                                   
             validate_linkuri,
             validate_litere,
             validate_litere_cratima
@@ -234,7 +240,7 @@ class ContactForm(forms.Form):
         widget=forms.Textarea,
         label='Mesaj (includeți semnatura la final)',
         required=True,
-        validators=[                                   # fără linkuri + 5–100 cuvinte + ≤ 15/car cuvânt
+        validators=[                                  
             validate_linkuri,
             validate_numar_cuvinte,
             validate_len_cuvant
@@ -366,6 +372,8 @@ class ProdusForm(forms.ModelForm):
                 raise ValidationError("Pretul final rezultat trebuie să fie cel putin 50 RON.")
         return cleaned
 
+# LAB6 : formular logare
+# LAB7 : logari suspecte
  
 class CustomAuthenticationForm(AuthenticationForm):
     ramane_logat = forms.BooleanField(
@@ -374,11 +382,45 @@ class CustomAuthenticationForm(AuthenticationForm):
         label='Ramaneti logat'
     )
 
-    def clean(self):        
-        cleaned_data = super().clean()
-        ramane_logat = self.cleaned_data.get('ramane_logat')
+    def clean(self):
+        request = getattr(self, "request", None)
+        try:
+            cleaned_data = super().clean()
+        except ValidationError as e:
+            if request is not None:
+                username = self.data.get("username", "")
+                ip = request.META.get("REMOTE_ADDR", "unknown")
+                now = time.time()
+                key = "failed_logins"
+                data = request.session.get(key, [])
+                data = [item for item in data if now - item.get("ts", 0) <= 120]
+                data.append({"username": username, "ip": ip, "ts": now})
+                request.session[key] = data
+                count = sum(
+                    1
+                    for item in data
+                    if item.get("username") == username and item.get("ip") == ip
+                )
+                if count >= 3:
+                    # LAB7 : CLOG
+                    logger.critical(f"Logari suspecte pentru username={username} de la IP={ip}")
+                    subject = "Logari suspecte"
+                    message = f"Username: {username}\nIP: {ip}"
+                    html_message = (
+                        f'<h1 style="color:red;">{subject}</h1>'
+                        f"<p>Username: {username}</p>"
+                        f"<p>IP: {ip}</p>"
+                    )
+                    mail_admins(subject, message, html_message=html_message)
+            raise e
+        # LAB8 : user blocat
+        user = self.get_user()
+        if getattr(user, "blocat", False):
+            raise ValidationError("Contul dvs a fost blocat. Contactati un moderator.")
+        ramane_logat = self.cleaned_data.get("ramane_logat")
         return cleaned_data
-    
+
+                                   
 class CustomUserCreationForm(UserCreationForm):
     nume = forms.CharField(max_length=100, label="Nume complet")
     telefon = forms.CharField(max_length=20, label="Telefon", required=False)
@@ -433,9 +475,53 @@ class CustomUserCreationForm(UserCreationForm):
             if val < 100000 or val > 999999:
                 raise ValidationError("Codul poștal trebuie sa aiba 6 cifre.")
         return val
-
+    
     def clean_data_nasterii(self):
         val = self.cleaned_data.get("data_nasterii")
         if val and val >= date.today():
             raise ValidationError("Data nașterii trebuie să fie în trecut.")
         return val
+    # LAB7 : admin inregistrare username
+    def clean_username(self):
+        username = self.cleaned_data.get("username", "")
+        if username.lower() == "admin":
+            # LAB7 : CLOG
+            logger.critical(f"Cineva incearca sa se inregistreze cu username=admin, email={email}") 
+            email = self.cleaned_data.get("email", "")
+            subject = "cineva incearca sa ne preia site-ul"
+            message = f"Username: {username}\nEmail: {email}"
+            html_message = (
+                f'<h1 style="color:red;">{subject}</h1>'
+                f"<p>Username: {username}</p>"
+                f"<p>Email: {email}</p>"
+            )
+            mail_admins(subject, message, html_message=html_message)
+            raise ValidationError("Acest username nu este permis.")
+        return username
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.cod = get_random_string(32)
+        if commit:
+            user.save()
+        return user
+
+# LAB7 : formular promotii
+class PromotieForm(forms.ModelForm):
+    subiect = forms.CharField(max_length=150)
+    mesaj = forms.CharField(widget=forms.Textarea)
+    categorii = forms.ModelMultipleChoiceField(
+        queryset=Categorie.objects.filter(slug__in=["SLUG1", "SLUG2"]),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    class Meta:
+        model = Promotie
+        fields = ["nume", "data_expirare", "procent", "descriere", "categorii"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["categorii"].initial = list(
+            self.fields["categorii"].queryset.values_list("pk", flat=True)
+        )
+        self.fields["data_expirare"].label = "Timp promotie"
+        self.fields["nume"].label = "Nume promotie"

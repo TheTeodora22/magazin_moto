@@ -1,0 +1,167 @@
+INFO 2025-11-25 13:26:31,820 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 13:26:38,627 django.server basehttp "GET /interzis HTTP/1.1" 301 0
+WARNING 2025-11-25 13:26:38,651 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:38,652 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:52,763 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:52,763 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:53,413 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:53,413 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:53,978 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:53,979 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:54,493 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:54,495 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:55,123 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:55,124 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:58,702 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:58,703 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:59,297 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:59,298 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:59,795 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:59,796 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:27:00,415 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:27:00,415 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2108
+INFO 2025-11-25 13:31:06,605 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/admin.py changed, reloading.
+INFO 2025-11-25 13:31:07,006 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 13:31:19,328 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/admin.py changed, reloading.
+INFO 2025-11-25 13:31:19,647 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 13:31:32,914 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/admin.py changed, reloading.
+INFO 2025-11-25 13:31:33,272 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 13:32:12,303 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/admin.py changed, reloading.
+INFO 2025-11-25 13:32:12,623 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:31:42,037 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:31:46,278 django.server basehttp "GET / HTTP/1.1" 200 2816
+WARNING 2025-11-25 18:31:46,362 django.request log Not Found: /favicon.ico
+INFO 2025-11-25 18:31:53,247 django.server basehttp "GET /admin HTTP/1.1" 301 0
+INFO 2025-11-25 18:31:53,262 django.server basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:31:53,285 django.server basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4187
+INFO 2025-11-25 18:31:53,352 django.server basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 21310
+INFO 2025-11-25 18:31:53,352 django.server basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2929
+INFO 2025-11-25 18:31:53,356 django.server basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+INFO 2025-11-25 18:31:53,357 django.server basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2694
+INFO 2025-11-25 18:31:53,360 django.server basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 18559
+INFO 2025-11-25 18:31:53,361 django.server basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-11-25 18:31:53,361 django.server basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 958
+INFO 2025-11-25 18:31:56,116 django.server basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4353
+INFO 2025-11-25 18:32:23,196 django.server basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4348
+INFO 2025-11-25 18:35:09,371 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:35:16,169 django.server basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4348
+INFO 2025-11-25 18:35:21,698 django.server basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:35:21,714 django.server basehttp "GET /admin/ HTTP/1.1" 200 9852
+INFO 2025-11-25 18:35:21,892 django.server basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-11-25 18:35:21,907 django.server basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-11-25 18:35:21,907 django.server basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-11-25 18:38:46,357 django.server basehttp "GET /admin/auth/group/ HTTP/1.1" 200 10309
+INFO 2025-11-25 18:38:46,397 django.server basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6566
+INFO 2025-11-25 18:38:46,400 django.server basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-25 18:38:46,402 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:38:46,402 django.server basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8943
+INFO 2025-11-25 18:38:46,403 django.server basehttp "GET /static/admin/js/core.js HTTP/1.1" 200 5682
+INFO 2025-11-25 18:38:46,405 django.server basehttp "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+INFO 2025-11-25 18:38:46,407 django.server basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-25 18:38:46,407 django.server basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-25 18:38:46,408 django.server basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+INFO 2025-11-25 18:38:46,409 django.server basehttp "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2025-11-25 18:38:46,409 django.server basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 289782
+INFO 2025-11-25 18:38:46,449 django.server basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-11-25 18:38:46,465 django.server basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-11-25 18:38:53,077 django.server basehttp "GET /admin/auth/group/add/ HTTP/1.1" 200 16329
+INFO 2025-11-25 18:38:53,111 django.server basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 9090
+INFO 2025-11-25 18:38:53,114 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:38:53,117 django.server basehttp "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+INFO 2025-11-25 18:38:53,118 django.server basehttp "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15292
+INFO 2025-11-25 18:38:53,121 django.server basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-11-25 18:38:53,121 django.server basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-11-25 18:38:53,155 django.server basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11921
+INFO 2025-11-25 18:38:53,332 django.server basehttp "GET /static/admin/img/icon-unknown.svg HTTP/1.1" 200 655
+INFO 2025-11-25 18:38:53,334 django.server basehttp "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+INFO 2025-11-25 18:38:53,334 django.server basehttp "GET /static/admin/img/icon-unknown-alt.svg HTTP/1.1" 200 655
+INFO 2025-11-25 18:40:06,269 django.server basehttp "POST /admin/auth/group/add/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:40:06,303 django.server basehttp "GET /admin/auth/group/ HTTP/1.1" 200 11676
+INFO 2025-11-25 18:40:06,426 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:40:06,469 django.server basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-11-25 18:40:09,950 django.server basehttp "GET /admin/auth/group/1/change/ HTTP/1.1" 200 16717
+INFO 2025-11-25 18:40:10,004 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:40:16,167 django.server basehttp "POST /admin/auth/group/1/change/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:40:16,223 django.server basehttp "GET /admin/auth/group/ HTTP/1.1" 200 11678
+INFO 2025-11-25 18:40:16,296 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:40:24,385 django.server basehttp "GET /admin/auth/ HTTP/1.1" 200 5178
+INFO 2025-11-25 18:40:25,941 django.server basehttp "GET /admin/auth/ HTTP/1.1" 200 5178
+INFO 2025-11-25 18:40:26,980 django.server basehttp "GET /admin/ HTTP/1.1" 200 10480
+INFO 2025-11-25 18:40:44,979 django.server basehttp "GET /admin/auth/ HTTP/1.1" 200 5178
+INFO 2025-11-25 18:41:04,314 django.server basehttp "GET /admin/ HTTP/1.1" 200 10480
+INFO 2025-11-25 18:41:07,361 django.server basehttp "GET /admin/moto_shop/customuser/ HTTP/1.1" 200 15986
+INFO 2025-11-25 18:41:07,384 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:41:07,429 django.server basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-11-25 18:41:07,446 django.server basehttp "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO 2025-11-25 18:41:35,573 django.server basehttp "GET /admin/moto_shop/customuser/1/change/ HTTP/1.1" 200 33037
+INFO 2025-11-25 18:41:35,618 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:41:35,621 django.server basehttp "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+INFO 2025-11-25 18:41:35,621 django.server basehttp "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2025-11-25 18:41:35,698 django.server basehttp "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+INFO 2025-11-25 18:41:35,699 django.server basehttp "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+INFO 2025-11-25 18:42:40,731 django.server basehttp "POST /admin/moto_shop/customuser/1/change/ HTTP/1.1" 200 33197
+INFO 2025-11-25 18:42:40,773 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+WARNING 2025-11-25 18:42:40,868 django.request log Not Found: /favicon.ico
+INFO 2025-11-25 18:42:50,579 django.server basehttp "POST /admin/moto_shop/customuser/1/change/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:42:50,608 django.server basehttp "GET /admin/moto_shop/customuser/ HTTP/1.1" 200 16202
+INFO 2025-11-25 18:42:50,690 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:48:22,977 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:48:23,330 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:49:16,326 django.server basehttp "GET /admin/auth/group/ HTTP/1.1" 200 11466
+INFO 2025-11-25 18:49:16,343 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:49:19,614 django.server basehttp "GET /admin/auth/group/add/ HTTP/1.1" 200 16329
+INFO 2025-11-25 18:49:19,654 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:50:11,857 django.server basehttp "POST /admin/auth/group/add/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:50:11,910 django.server basehttp "GET /admin/auth/group/ HTTP/1.1" 200 11890
+INFO 2025-11-25 18:50:12,065 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:50:18,342 django.server basehttp "GET /admin/moto_shop/customuser/ HTTP/1.1" 200 16062
+INFO 2025-11-25 18:50:18,362 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:50:21,153 django.server basehttp "GET /admin/moto_shop/customuser/6/change/ HTTP/1.1" 200 32956
+INFO 2025-11-25 18:50:21,179 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:50:38,914 django.server basehttp "POST /admin/moto_shop/customuser/6/change/ HTTP/1.1" 200 33184
+INFO 2025-11-25 18:50:38,932 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:50:49,494 django.server basehttp "POST /admin/moto_shop/customuser/6/change/ HTTP/1.1" 302 0
+INFO 2025-11-25 18:50:49,510 django.server basehttp "GET /admin/moto_shop/customuser/ HTTP/1.1" 200 16273
+INFO 2025-11-25 18:50:49,581 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:51:11,926 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:51:12,262 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:51:27,668 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:51:28,065 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:51:29,255 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:51:29,595 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:51:30,818 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:51:31,131 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:51:49,685 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:51:50,049 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:53:03,596 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:53:04,039 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:53:30,626 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:53:30,981 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:53:45,380 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 18:53:45,674 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:58:14,720 django.server basehttp "GET /admin/auth/group/add/ HTTP/1.1" 200 16329
+INFO 2025-11-25 18:58:14,758 django.server basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+INFO 2025-11-25 18:59:40,230 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/models.py changed, reloading.
+INFO 2025-11-25 18:59:40,566 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:59:53,871 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/models.py changed, reloading.
+INFO 2025-11-25 18:59:54,176 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 18:59:56,373 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/models.py changed, reloading.
+INFO 2025-11-25 18:59:56,639 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:00:20,116 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:00:20,427 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:00:27,599 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:00:27,974 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:00:30,361 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:00:30,655 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:00:42,989 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:00:43,301 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:00:46,531 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:00:46,904 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:01:27,663 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:01:27,962 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:01:30,120 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/views.py changed, reloading.
+INFO 2025-11-25 19:01:30,463 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:02:09,296 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/urls.py changed, reloading.
+INFO 2025-11-25 19:02:09,666 django.utils.autoreload autoreload Watching for file changes with StatReloader
+INFO 2025-11-25 19:02:11,899 django.utils.autoreload autoreload /home/teo/Facultate/django/magazin_moto/moto_shop/urls.py changed, reloading.
+INFO 2025-11-25 19:02:12,261 django.utils.autoreload autoreload Watching for file changes with StatReloader

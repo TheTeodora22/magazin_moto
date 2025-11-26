@@ -18,4 +18,12 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("profil/", views.profil_view, name="profil"),
     path("schimba-parola/", views.schimba_parola_view, name="schimba_parola"),
+    path('confirma_mail/<str:cod>/', views.confirma_mail, name='confirma_mail'),
+    path("promotii/", views.promotii_view, name="promotii"),
+    path("interzis/", views.interzis_view, name="interzis"),
+    path("oferta/", views.oferta_view, name="oferta"),
+    path("oferta_claim/", views.oferta_claim, name="oferta_claim"),
+
+
+
 ]

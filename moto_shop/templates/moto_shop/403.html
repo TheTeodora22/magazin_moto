@@ -1,0 +1,33 @@
+{% extends "moto_shop/baza.html" %}
+
+{% block title %}Eroare 403{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% if user.is_authenticated %}
+    <h1>Salut {{ user.username }}</h1>
+  {% else %}
+    <h1>Salut preastimate anonim</h1>
+  {% endif %}
+
+  {% if titlu %}
+    <h1>{{ titlu }}</h1>
+  {% else %}
+    <h1>Eroare 403</h1>
+  {% endif %}
+
+  {% if mesaj_personalizat %}
+    <p>{{ mesaj_personalizat }}</p>
+  {% else %}
+    <p>Nu aveți permisiunea de a accesa această resursă.</p>
+  {% endif %}
+
+  <p>Ai ajuns pe această pagină 403 de {{ n_403 }} ori în sesiunea curentă.</p>
+
+  {% if n_403 > N_MAX_403 %}
+    <p id="atentionare" style="color: red;">
+      User-ul a accesat în sesiunea curentă pagina 403 de {{ n_403 }} ori
+    </p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -46,6 +46,16 @@ AUTHENTICATION_BACKENDS = [
 ]
 AUTH_USER_MODEL = "moto_shop.CustomUser"
 
+ADMINS = [
+    ("Admin1", "admin1@example.com"),
+    ("Admin2", "admin2@example.com"),
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@example.com"
+SERVER_EMAIL = "server@example.com"
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'magazin_moto.urls'
 
@@ -128,3 +139,73 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+N_MAX_403 = 5
+N_MAX_VIZUALIZARI = 5
+PROMO_MIN_VIZUALIZARI = 2
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {name} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "WARNING",
+            "formatter": "simple",
+        },
+        "debug_file": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "verbose",
+            "filename": "debug.log",
+        },
+        "info_file": {
+            "class": "logging.FileHandler",
+            "level": "INFO",
+            "formatter": "verbose",
+            "filename": "info.log",
+        },
+        "warning_file": {
+            "class": "logging.FileHandler",
+            "level": "WARNING",
+            "formatter": "verbose",
+            "filename": "warning.log",
+        },
+        "error_file": {
+            "class": "logging.FileHandler",
+            "level": "ERROR",
+            "formatter": "verbose",
+            "filename": "error.log",
+        },
+        "critical_file": {
+            "class": "logging.FileHandler",
+            "level": "CRITICAL",
+            "formatter": "verbose",
+            "filename": "critical.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": [
+                "console",
+                "debug_file",
+                "info_file",
+                "warning_file",
+                "error_file",
+                "critical_file",
+            ],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}

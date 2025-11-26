@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
@@ -149,9 +150,36 @@ class CustomUser(AbstractUser):
     nr_strada = models.IntegerField( null=True,blank=True)
     cod_postal = models.IntegerField( null=True,blank=True)
     data_nasterii = models.DateField(null=True, blank=True)
+    cod = models.CharField(max_length=100, null=True)
+    email_confirmat = models.BooleanField(default=False,null=False)
+    blocat = models.BooleanField(default=False)
+
 
     class Meta:
         verbose_name_plural = "Utilizatori"
 
     def __str__(self):
         return self.username
+    
+# LAB7 : modele promotii si vizualizare
+class Vizualizare(models.Model):
+    utilizator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    produs = models.ForeignKey(Produs, on_delete=models.CASCADE)
+    data_vizualizare = models.DateTimeField(auto_now_add=True)
+
+class Promotie(models.Model):
+    nume = models.CharField(max_length=100)
+    data_creare = models.DateTimeField(auto_now_add=True)
+    data_expirare = models.DateField()
+    procent = models.DecimalField(max_digits=5, decimal_places=2)
+    descriere = models.TextField()
+    categorii = models.ManyToManyField(Categorie)
+
+    class Meta:
+        verbose_name_plural = "Promotii"
+        permissions = (
+            ("vizualizeaza_oferta", "Poate vizualiza oferta speciala"),
+        )
+    def __str__(self):
+        return self.nume
+

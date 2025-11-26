@@ -1,0 +1,22 @@
+WARNING 2025-11-25 13:26:38,651 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:38,652 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:52,763 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:52,763 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:53,413 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:53,413 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:53,978 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:53,979 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:54,493 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:54,495 django.server basehttp "GET /interzis/ HTTP/1.1" 403 1983
+WARNING 2025-11-25 13:26:55,123 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:55,124 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:58,702 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:58,703 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:59,297 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:59,298 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:26:59,795 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:26:59,796 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2106
+WARNING 2025-11-25 13:27:00,415 django.request log Forbidden: /interzis/
+WARNING 2025-11-25 13:27:00,415 django.server basehttp "GET /interzis/ HTTP/1.1" 403 2108
+WARNING 2025-11-25 18:31:46,362 django.request log Not Found: /favicon.ico
+WARNING 2025-11-25 18:42:40,868 django.request log Not Found: /favicon.ico
