@@ -143,7 +143,7 @@ class ContactForm(forms.Form):
         max_length=100,
         label='Subiect',
         required=True,
-        validators=[                                   # fără linkuri + format nume propriu
+        validators=[                                   
             validate_linkuri,
             validate_litere,
             validate_litere_cratima
@@ -162,7 +162,7 @@ class ContactForm(forms.Form):
         widget=forms.Textarea,
         label='Mesaj (includeți semnatura la final)',
         required=True,
-        validators=[                                   # fără linkuri + 5–100 cuvinte + ≤ 15/car cuvânt
+        validators=[                                  
             validate_linkuri,
             validate_numar_cuvinte,
             validate_len_cuvant
