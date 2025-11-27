@@ -1,0 +1,20 @@
+{% extends "moto_shop/baza.html" %}
+
+{% block content %}
+<h1>Profil utilizator</h1>
+<ul>
+  <li>Username: {{ profil.username }}</li>
+  <li>Email: {{ profil.email }}</li>
+  <li>Nume: {{ profil.nume }}</li>
+  <li>Telefon: {{ profil.telefon }}</li>
+  <li>Țara: {{ profil.tara }}</li>
+  <li>Județ: {{ profil.judet }}</li>
+  <li>Localitate: {{ profil.localitate }}</li>
+  <li>Stradă: {{ profil.strada }} {{ profil.nr_strada }}</li>
+  <li>Cod poștal: {{ profil.cod_postal }}</li>
+  <li>Data nașterii: {{ profil.data_nasterii }}</li>
+</ul>
+
+<a href="{% url 'schimba_parola' %}">Schimbă parola</a>
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

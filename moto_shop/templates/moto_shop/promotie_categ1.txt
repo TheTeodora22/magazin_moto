@@ -1,0 +1,16 @@
+Subiect: {{ subiect }}
+
+Salut, {{ user.nume }}!
+
+Avem o promoție pentru categoria {{ categorie_nume }}.
+Reducere: {{ procent }}%
+
+Promoția expiră pe data de: {{ data_expirare }}
+
+Detalii:
+{{ descriere }}
+
+Mesaj special:
+{{ mesaj_extra }}
+
+Echipa Moto Shop

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmare e-mail</title>
+</head>
+<body>
+
+    <div style="text-align:center; margin-bottom:20px;">
+        <img src="{{ protocol }}://{{ domain }}{% static 'imagini/motor.jpg' %}"
+             alt="Logo site" style="max-width:200px;">
+    </div>
+
+    <h1>Bun venit, {{ user.nume }}!</h1>
+
+    <p>Numele tău complet: {{ user.nume }}</p>
+    <p>Username: <strong>{{ user.username }}</strong></p>
+
+    <p>Pentru a confirma e-mailul, accesează următorul link:</p>
+
+    <p>
+        <a href="{{ protocol }}://{{ domain }}/confirma_mail/{{ user.cod }}/">
+            {{ protocol }}://{{ domain }}/confirma_mail/{{ user.cod }}/
+        </a>
+    </p>
+
+    <p>Dacă nu tu ti-ai creat acest cont, poti ignora acest mesaj.</p>
+
+</body>
+</html>

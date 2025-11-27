@@ -1,0 +1,24 @@
+{% extends "moto_shop/baza.html" %}
+
+{% block content %}
+<h1>Schimbă parola</h1>
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ form.as_p }}
+  <button type="submit">Salvează noua parolă</button>
+</form>
+
+<p>
+  <a href="{% url 'profil' %}">&larr; Înapoi la profil</a>
+</p>
+{% endblock %}

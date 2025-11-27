@@ -1,7 +1,19 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from .models import (
-    Brand, Categorie, Produs, ImagineProdus, Furnizor, Discount, VariantaProdus
+    CustomUser,
+    Brand,
+    Categorie,
+    Produs,
+    ImagineProdus,
+    Furnizor,
+    Discount,
+    VariantaProdus,
+    Vizualizare,
+    Promotie,
 )
+
+
 
 class ImagineProdusInline(admin.TabularInline):
     model = ImagineProdus
@@ -87,6 +99,50 @@ class VariantaProdusAdmin(admin.ModelAdmin):
     ordering = ("-pret",)                                                   
     list_per_page = 5
 
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        ("Date suplimentare", {
+            "fields": (
+                "nume",
+                "telefon",
+                "tara",
+                "judet",
+                "localitate",
+                "strada",
+                "nr_strada",
+                "cod_postal",
+                "data_nasterii",
+                "cod",
+                "email_confirmat",
+            )
+        }),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ("Date suplimentare", {
+            "classes": ("wide",),
+            "fields": (
+                "nume",
+                "telefon",
+                "tara",
+                "judet",
+                "localitate",
+                "strada",
+                "nr_strada",
+                "cod_postal",
+                "data_nasterii",
+            ),
+        }),
+    )
+    def get_readonly_fields(self, request, obj=None):
+        readonly = list(super().get_readonly_fields(request, obj))
+        if request.user.groups.filter(name="Moderatori").exists() and not request.user.is_superuser:
+            editable = ["first_name", "last_name", "email", "blocat"]
+            all_fields = [f.name for f in self.model._meta.fields]
+            extra_readonly = [f for f in all_fields if f not in editable]
+            return list(set(readonly + extra_readonly))
+        return readonly
+
+
 
 # personalizare
 admin.site.site_header = "Panou administrare MotoShop"
@@ -103,3 +159,6 @@ admin.site.register(ImagineProdus, ImagineProdusAdmin)
 admin.site.register(Furnizor, FurnizorAdmin)
 admin.site.register(Discount, DiscountAdmin)
 admin.site.register(VariantaProdus, VariantaProdusAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Vizualizare)
+admin.site.register(Promotie)

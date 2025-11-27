@@ -1,0 +1,36 @@
+{% extends "moto_shop/baza.html" %}
+
+{% block content %}
+<h1>Înregistrare</h1>
+
+{% if form.non_field_errors %}
+  <div class="form-errors">
+    {% for error in form.non_field_errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+
+  {% for field in form %}
+    <div class="form-row{% if field.errors %} has-error{% endif %}">
+      {{ field.label_tag }}
+      {{ field }}
+
+      {% if field.help_text %}
+        <small class="help-text">{{ field.help_text }}</small>
+      {% endif %}
+
+      {% for error in field.errors %}
+        <p class="error">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  <button type="submit">Creează cont</button>
+</form>
+
+<a href="{% url 'login' %}">Ai deja cont? Login</a>
+{% endblock %}

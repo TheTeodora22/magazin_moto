@@ -1,0 +1,39 @@
+{% extends "moto_shop/baza.html" %}
+
+{% block content %}
+<h1>Autentificare</h1>
+
+{% if form.errors %}
+  <div style="color:red; margin-bottom:1rem;">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+
+  <p>
+    {{ form.username.label_tag }}
+    {{ form.username }}
+    {% if form.username.errors %}
+      <span style="color:red;">{{ form.username.errors.0 }}</span>
+    {% endif %}
+  </p>
+
+  <p>
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    {% if form.password.errors %}
+      <span style="color:red;">{{ form.password.errors.0 }}</span>
+    {% endif %}
+  </p>
+
+  <p>
+    {{ form.ramane_logat }} {{ form.ramane_logat.label_tag }}
+  </p>
+
+  <button type="submit">Login</button>
+</form>
+
+<a href="{% url 'register' %}">Nu ai cont? Înregistrează-te</a>
+{% endblock %}

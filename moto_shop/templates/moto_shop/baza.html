@@ -30,9 +30,36 @@
             {% include "moto_shop/_menu_categorii.html" %}
             <li><a href="{% url 'contact' %}">Contact</a></li>
             <li><a href="{% url 'cos_virtual' %}">Cos virtual</a></li>
-            <li><a href="{% url 'info' %}">Info</a></li>
-            <li><a href="{% url 'log' %}">Log</a></li>
+            {% if perms.moto_shop.add_produs %}
+                <li><a href="{% url 'produs_creare' %}">Adaugă produs</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                {% for g in user.groups.all %}
+                    {% if g.name == "Administratori_site" %}
+                        <li><a href="{% url 'info' %}">Info</a></li>
+                        <li><a href="{% url 'log' %}">Log</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </ul>
+        {% if user.is_authenticated %}
+  <div id="oferta-banner" class="oferta-banner" style="display:none;">
+    <a href="{% url 'oferta_claim' %}">Oferta reducere 50%</a>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (Math.random() < 0.3) {
+      var banner = document.getElementById("oferta-banner");
+      if (banner) {
+        banner.style.display = "block";
+        banner.classList.add("oferta-animata");
+      }
+    }
+  });
+  </script>
+{% endif %}
+
         </nav>
     </header>     
         <main>

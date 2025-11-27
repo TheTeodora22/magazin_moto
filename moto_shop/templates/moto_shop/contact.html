@@ -1,0 +1,19 @@
+{% extends "moto_shop/baza.html" %}
+{% load static %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<h1>Contact</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for field in form %}
+    <div style="margin-bottom: .75rem;">
+      <label>{{ field.label }}</label><br>
+      {{ field }}
+      {% if field.help_text %}<div><small>{{ field.help_text }}</small></div>{% endif %}
+      {% for err in field.errors %}<div style="color:red">{{ err }}</div>{% endfor %}
+    </div>
+  {% endfor %}
+  <button type="submit">Trimite</button>
+</form>
+{% endblock %}

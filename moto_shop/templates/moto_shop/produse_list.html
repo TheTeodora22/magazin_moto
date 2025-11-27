@@ -7,20 +7,6 @@
 <section class="container">
   <header class="flex items-center justify-between">
     <h1>{{ title }}</h1>
-    {% if categorie %}
-  <div class="categorie-header"
-       style="border-left: 6px solid {{ categorie.culoare|default:'#ccc' }}; padding-left:.75rem; margin-top:1rem;">
-    <h2>
-      {% if categorie.icon_css %}
-        <i class="{{ categorie.icon_css }}" aria-hidden="true"></i>
-      {% endif %}
-      {{ categorie.nume }}
-    </h2>
-    {% if categorie.descriere %}
-      <p>{{ categorie.descriere }}</p>
-    {% endif %}
-  </div>
-{% endif %}
     <form method="get" class="sort-form">
       <label for="sort">Sortează după nume:</label>
       <select id="sort" name="sort" onchange="this.form.submit()">
@@ -30,51 +16,104 @@
     </form>
   </header>
 
-  <div class="products-grid">
-  {% for p in page_obj %}
-    <article class="product-card">
-      <a class="thumb" href="{% url 'produs_detail' p.pk %}">
-        {% with img=p.imagini.first %}
-          {% if img %}
-            <img src="{{ img.url }}" alt="{{ img.alt_text|default:p.nume }}">
-          {% else %}
-            <div class="placeholder">{{ p.nume|slice:":1" }}</div>
-          {% endif %}
-        {% endwith %}
-      </a>
+  {% if categorie %}
+    {% if categorie.culoare %}
+      <div class="categorie-header" style="border-left: 6px solid {{ categorie.culoare }};">
+    {% else %}
+      <div class="categorie-header" style="border-left: 6px solid #ccc;">
+    {% endif %}
+      <h2>
+        {% if categorie.icon_css %}
+          <i class="{{ categorie.icon_css }}" aria-hidden="true"></i>
+        {% endif %}
+        {{ categorie.nume }}
+      </h2>
+      {% if categorie.descriere %}
+        <p>{{ categorie.descriere }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
 
-      <div class="info">
-        <h3 class="title">
-          <a href="{% url 'produs_detail' p.pk %}">{{ p.nume }}</a>
-        </h3>
-
-      <div class="meta">
-        <span class="brand">{{ p.brand.nume }}</span>
-
-        {% for cat in p.categorii.all %}
-        <a class="cat-badge" href="{{ cat.get_absolute_url }}"
-            style="--cat: {{ cat.culoare|default:'#9e9e9e' }};">
-            {% if cat.icon_css %}<i class="{{ cat.icon_css }}"></i>{% endif %}
-             {{ cat.nume }}
-        </a>
-        {% empty %}
-        <span class="cat-badge" style="--cat:#9e9e9e;">Fara categorie</span>
-        {% endfor %}
-      </div>
-
-
-      <div class="buy">
-        <div class="price">{{ p.pret_baza }} RON</div>
-        <a class="btn" href="{% url 'produs_detail' p.pk %}">Detalii</a>
-      </div>
-    </article>
-  {% empty %}
-    <p>Nu există produse de afișat.</p>
-  {% endfor %}
+  {% if messages %}
+<div id="popup-overlay">
+  <div id="popup-box">
+    {% for message in messages %}
+      <p class="popup-message {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+    <button id="popup-close">Închide</button>
+  </div>
 </div>
+{% endif %}
 
 
-  <!-- Paginare -->
+  <section class="filters">
+    <h2>Filtre</h2>
+    <form method="get">
+      <input type="hidden" name="sort" value="{{ sort }}">
+      {{ form.as_p }}
+      <div class="filters-actions">
+        <button type="submit">Aplică filtre</button>
+        {% if categorie %}
+  <button type="button"
+          id="reset-filtre"
+          data-reset-url="{% url 'categorie_detail' categorie.slug %}">
+    Reset filtre
+  </button>
+{% else %}
+  <button type="button"
+          id="reset-filtre"
+          data-reset-url="{% url 'produse_list' %}">
+    Reset filtre
+  </button>
+{% endif %}
+
+      </div>
+    </form>
+  </section>
+
+  <div class="products-grid">
+    {% for p in page_obj %}
+      <article class="product-card">
+        <a class="thumb" href="{% url 'produs_detail' p.pk %}">
+          {% with img=p.imagini.first %}
+            {% if img %}
+              <img src="{{ img.url }}" alt="{{ img.alt_text|default:p.nume }}">
+            {% else %}
+              <div class="placeholder">{{ p.nume|slice:":1" }}</div>
+            {% endif %}
+          {% endwith %}
+        </a>
+
+        <div class="info">
+          <h3 class="title">
+            <a href="{% url 'produs_detail' p.pk %}">{{ p.nume }}</a>
+          </h3>
+
+          <div class="meta">
+            <span class="brand">{{ p.brand.nume }}</span>
+
+            {% for cat in p.categorii.all %}
+              <a class="cat-badge" href="{{ cat.get_absolute_url }}"
+                 style="--cat: {{ cat.culoare|default:'#9e9e9e' }};">
+                {% if cat.icon_css %}<i class="{{ cat.icon_css }}"></i>{% endif %}
+                {{ cat.nume }}
+              </a>
+            {% empty %}
+              <span class="cat-badge" style="--cat:#9e9e9e;">Fără categorie</span>
+            {% endfor %}
+          </div>
+
+          <div class="buy">
+            <div class="price">{{ p.pret_baza }} RON</div>
+            <a class="btn" href="{% url 'produs_detail' p.pk %}">Detalii</a>
+          </div>
+        </div>
+      </article>
+    {% empty %}
+      <p>Nu există produse pentru filtrele selectate.</p>
+    {% endfor %}
+  </div>
+
   <nav class="paginare">
     <ul>
       {% if page_obj.has_previous %}
@@ -91,4 +130,29 @@
     </ul>
   </nav>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("popup-overlay");
+  const closeBtn = document.getElementById("popup-close");
+  const resetBtn = document.getElementById("reset-filtre");
+
+  if (overlay && closeBtn) {
+    closeBtn.addEventListener("click", () => overlay.style.display = "none");
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.style.display = "none";
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (confirm('Sigur vrei să resetezi filtrele? Vei pierde toate filtrele deja setate.')) {
+        const url = resetBtn.dataset.resetUrl;
+        if (url) {
+          window.location.href = url;
+        }
+      }
+    });
+  }
+});
+</script>
 {% endblock %}

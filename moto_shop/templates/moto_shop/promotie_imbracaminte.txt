@@ -1,0 +1,14 @@
+Subiect: {{ subiect }}
+
+Bună!
+
+Tocmai am lansat o ofertă pentru produsele din categoria {{ categorie }}!
+
+Reducerea este de: {{ procent }}%
+Valabilă până la: {{ data_expirare }}
+
+Detalii promoție:
+{{ descriere }}
+
+Te așteptăm cu drag pe site!
+Echipa Moto Shop
